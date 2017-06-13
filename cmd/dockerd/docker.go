@@ -32,7 +32,7 @@ func newDaemonCommand() *cobra.Command {
 	cli.SetupRootCommand(cmd)
 
 	flags := cmd.Flags()
-	flags.BoolVarP(&opts.version, "version", "v", false, "Print version information and quit")
+	flags.BoolVarP(&opts.version, "version", "v", false, "Print version information and quit, Hello from Nannan!")
 	flags.StringVar(&opts.configFile, "config-file", defaultDaemonConfigFile, "Daemon configuration file")
 	opts.InstallFlags(flags)
 	installConfigFlags(opts.daemonConfig, flags)
