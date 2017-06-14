@@ -65,6 +65,7 @@ func NewDaemonCli() *DaemonCli {
 }
 
 func (cli *DaemonCli) start(opts *daemonOptions) (err error) {
+	logrus.Debug("Nannan: here start a server")
 	stopc := make(chan bool)
 	defer close(stopc)
 

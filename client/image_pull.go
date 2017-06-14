@@ -31,6 +31,8 @@ func (cli *Client) ImagePull(ctx context.Context, refStr string, options types.I
 		query.Set("tag", getAPITagFromNamedRef(ref))
 	}
 
+	logrus.Debug("Nannan: fromImage", reference.FamiliarName(ref))
+
 	resp, err := cli.tryImageCreate(ctx, query, options.RegistryAuth)
 	if resp.statusCode == http.StatusUnauthorized && options.PrivilegeFunc != nil {
 		newAuthHeader, privilegeErr := options.PrivilegeFunc()
@@ -51,6 +53,7 @@ func (cli *Client) ImagePull(ctx context.Context, refStr string, options types.I
 // and tag/digest part of a reference.
 func getAPITagFromNamedRef(ref reference.Named) string {
 	if digested, ok := ref.(reference.Digested); ok {
+
 		return digested.Digest().String()
 	}
 	ref = reference.TagNameOnly(ref)
