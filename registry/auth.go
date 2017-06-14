@@ -270,15 +270,33 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 		Timeout:   15 * time.Second,
 	}
 	endpointStr := strings.TrimRight(endpoint.String(), "/") + "/v2/"
+
 	req, err := http.NewRequest("GET", endpointStr, nil)
 	if err != nil {
 		return nil, false, err
 	}
+
+	logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
+	//req := &Request{
+	//	Method:     method,
+	//	URL:        u,
+	//	Proto:      "HTTP/1.1",
+	//	ProtoMajor: 1,
+	//	ProtoMinor: 1,
+	//	Header:     make(Header),
+	//	Body:       rc,
+	//	Host:       u.Host,
+	//}
+
 	resp, err := pingClient.Do(req)
 	if err != nil {
 		return nil, false, err
 	}
+
 	defer resp.Body.Close()
+
+	bs := string(resp.Body)
+	logrus.Debugf("PingV2Registry: resp: body: %s", bs)
 
 	versions := auth.APIVersions(resp, DefaultRegistryVersionHeader)
 	for _, pingVersion := range versions {
