@@ -300,7 +300,7 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 	buf1.ReadFrom(resp.Body)
 	bs1 := buf1.String()
 
-	buf2 := new(bytes)
+	buf2 := new(bytes.Buffer)
 	buf2.ReadFrom(resp.Header)
 	bs2 := buf2.String()
 
