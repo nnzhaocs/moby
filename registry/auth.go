@@ -383,4 +383,3 @@ func printRequest(r *http.Request) string {
 	// Return the request as a string
 	return strings.Join(request, "\n")
 }
-}
