@@ -468,9 +468,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	if _, ok := ms.etags[digestOrTag]; ok {
 		req.Header.Set("If-None-Match", ms.etags[digestOrTag])
 	}
-	
-	reqString := printRequest(req)
-	logrus.Debugf("Get manifest: %s", reqString)
+
+	//reqString := printRequest(req)
+	//logrus.Debugf("Get manifest: %s", reqString)
 
 	resp, err := ms.client.Do(req)
 	if err != nil {
@@ -478,8 +478,8 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	}
 	defer resp.Body.Close()
 
-	respString := printResponse(resp)
-	logrus.Debugf("Get manifest: %s", respString)
+	//respString := printResponse(resp)
+	//logrus.Debugf("Get manifest: %s", respString)
 
 	if resp.StatusCode == http.StatusNotModified {
 		return nil, distribution.ErrManifestNotModified
