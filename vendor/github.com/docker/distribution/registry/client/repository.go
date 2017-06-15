@@ -461,9 +461,6 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	}
 
 	//logrus.Debugf("Get manifest: http.NewRequest: GET %s body:nil", endpointStr)
-	reqString := printRequest(req)
-	logrus.Debugf("Get manifest: %s", reqString)
-
 	for _, t := range distribution.ManifestMediaTypes() {
 		req.Header.Add("Accept", t)
 	}
@@ -471,6 +468,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	if _, ok := ms.etags[digestOrTag]; ok {
 		req.Header.Set("If-None-Match", ms.etags[digestOrTag])
 	}
+	
+	reqString := printRequest(req)
+	logrus.Debugf("Get manifest: %s", reqString)
 
 	resp, err := ms.client.Do(req)
 	if err != nil {
