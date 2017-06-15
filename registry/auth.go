@@ -336,9 +336,9 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 func printResponse(resp *http.Response) string{
 	var response []string
 	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil{
-		return  nil
-	}
+	//if err != nil{
+	//	return  nil
+	//}
 
 	tr := string(bs)
 	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
