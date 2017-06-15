@@ -505,8 +505,8 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return m, nil
 	}
 
-	resp1 := resp
-	respString := printResponse(resp1)
+	//resp1 := resp
+	respString := printResponse(body)
 	logrus.Debugf("Get manifest: %s", respString)
 
 	return nil, HandleErrorResponse(resp)
@@ -869,14 +869,14 @@ func (bs *blobStatter) SetDescriptor(ctx context.Context, dgst digest.Digest, de
 	return nil
 }
 
-func printResponse(resp *http.Response) string{
+func printResponse(ctHeader string) string{
 	var response []string
-	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil{
-		//	return  nil
-	}
+	//bs := ctHeader
+	//if err != nil{
+	//	//	return  nil
+	//}
 
-	tr := string(bs)
+	tr := ctHeader
 	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
 
 	// Loop through headers
