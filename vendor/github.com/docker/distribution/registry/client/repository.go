@@ -20,7 +20,7 @@ import (
 	"github.com/docker/distribution/registry/client/transport"
 	"github.com/docker/distribution/registry/storage/cache"
 	"github.com/docker/distribution/registry/storage/cache/memory"
-	"github.com/docker/distribution/registry/auth"
+	"github.com/docker/distribution/registry"
 	"github.com/opencontainers/go-digest"
 )
 
