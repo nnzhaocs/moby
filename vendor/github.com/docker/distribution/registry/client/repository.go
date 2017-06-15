@@ -880,7 +880,11 @@ func printResponse(resp *http.Response) string{
 	//doStuff(rdr1)
 	resp.Body = rdr2
 
-	tr := string(rdr1)
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+	tr := buf1.String()
+
+	//tr := string(rdr1)
 	//buf1 := new(bytes.Buffer)
 	//buf1.ReadFrom(resp.Body)
 	//bs1 := buf1.String()
