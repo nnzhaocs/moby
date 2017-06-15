@@ -288,6 +288,8 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 	//	Body:       rc,
 	//	Host:       u.Host,
 	//}
+	reqString = printRequest(req)
+	logrus.Debugf("PingV2Registry: %s", reqString)
 
 	resp, err := pingClient.Do(req)
 	if err != nil {
@@ -296,15 +298,18 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 
 	defer resp.Body.Close()
 
-	buf1 := new(bytes.Buffer)
-	buf1.ReadFrom(resp.Body)
-	bs1 := buf1.String()
+	//buf1 := new(bytes.Buffer)
+	//buf1.ReadFrom(resp.Body)
+	//
+	//bs1 := buf1.String()
+	//bs2 = resp.Header
+	//buf2 := new(bytes.Buffer)
+	//buf2.ReadFrom(resp.Header)
+	//bs2 := buf2.String()
 
-	buf2 := new(bytes.Buffer)
-	buf2.ReadFrom(resp.Header)
-	bs2 := buf2.String()
-
-	logrus.Debugf("PingV2Registry: resp: body: %s; head: %s", bs1, bs2)
+	//logrus.Debugf("PingV2Registry: resp: body: %s; head: %s", bs1, bs2)
+	respString = printResponse(resp)
+	logrus.Debugf("PingV2Registry: %s", respString)
 
 	versions := auth.APIVersions(resp, DefaultRegistryVersionHeader)
 	for _, pingVersion := range versions {
@@ -326,4 +331,56 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 	}
 
 	return challengeManager, foundV2, nil
+}
+
+func printResponse(resp *http.Response) string{
+	var response []string
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		return  err
+	}
+
+	tr := string(bs)
+	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
+
+	// Loop through headers
+	for name, headers := range resp.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			response = append(response, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	//logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
+
+	return strings.Join(response, "\n")
+}
+
+func printRequest(r *http.Request) string {
+	// formatRequest generates ascii representation of a request
+	//func formatRequest(r *http.Request) string {
+	// Create return string
+	var request []string
+	// Add the request string
+	url := fmt.Sprintf("Request: Method: %v; URL: %v Proto: %v", r.Method, r.URL, r.Proto)
+	request = append(request, url)
+	// Add the host
+	request = append(request, fmt.Sprintf("Host: %v \n Header: ", r.Host))
+	// Loop through headers
+	for name, headers := range r.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			request = append(request, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	// If this is a POST, add post data
+	if r.Method == "POST" {
+		r.ParseForm()
+		request = append(request, "\n")
+		request = append(request, r.Form.Encode())
+	}
+	// Return the request as a string
+	return strings.Join(request, "\n")
+}
 }
