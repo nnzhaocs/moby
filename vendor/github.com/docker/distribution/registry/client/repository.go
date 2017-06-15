@@ -479,9 +479,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	}
 	defer resp.Body.Close()
 
-	//resp1 := resp
-	//respString := printResponse(resp1)
-	//logrus.Debugf("Get manifest: %s", respString)
+	resp1 := resp
+	respString := printResponse(resp1)
+	logrus.Debugf("Get manifest: %s", respString)
 
 	if resp.StatusCode == http.StatusNotModified {
 		return nil, distribution.ErrManifestNotModified
@@ -505,9 +505,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return m, nil
 	}
 
-	//resp1 := resp
-	respString := printResponse(body)
-	logrus.Debugf("Get manifest: %s", respString)
+	////resp1 := resp
+	//respString := printResponse(body)
+	//logrus.Debugf("Get manifest: %s", respString)
 
 	return nil, HandleErrorResponse(resp)
 }
@@ -869,14 +869,22 @@ func (bs *blobStatter) SetDescriptor(ctx context.Context, dgst digest.Digest, de
 	return nil
 }
 
-func printResponse(ctHeader string) string{
+func printResponse(resp *http.Response) string{
 	var response []string
-	//bs := ctHeader
-	//if err != nil{
-	//	//	return  nil
-	//}
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//	return  nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	//doStuff(rdr1)
+	resp.Body = rdr2
 
-	tr := ctHeader
+	tr := string(rdr1)
+	//buf1 := new(bytes.Buffer)
+	//buf1.ReadFrom(resp.Body)
+	//bs1 := buf1.String()
+
 	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
 
 	// Loop through headers
