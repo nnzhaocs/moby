@@ -14,7 +14,6 @@ import (
 	"github.com/docker/distribution/registry/client/transport"
 	"github.com/docker/docker/api/types"
 	registrytypes "github.com/docker/docker/api/types/registry"
-	"bytes"
 )
 
 const (
