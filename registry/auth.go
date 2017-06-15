@@ -288,7 +288,7 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 	//	Body:       rc,
 	//	Host:       u.Host,
 	//}
-	reqString = printRequest(req)
+	reqString := printRequest(req)
 	logrus.Debugf("PingV2Registry: %s", reqString)
 
 	resp, err := pingClient.Do(req)
@@ -308,7 +308,7 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 	//bs2 := buf2.String()
 
 	//logrus.Debugf("PingV2Registry: resp: body: %s; head: %s", bs1, bs2)
-	respString = printResponse(resp)
+	respString := printResponse(resp)
 	logrus.Debugf("PingV2Registry: %s", respString)
 
 	versions := auth.APIVersions(resp, DefaultRegistryVersionHeader)
