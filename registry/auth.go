@@ -296,12 +296,15 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 
 	defer resp.Body.Close()
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(resp.Body)
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(resp.Body)
+	bs1 := buf1.String()
 
-	bs := buf.String()
+	buf2 := new(bytes)
+	buf2.ReadFrom(resp.Header)
+	bs2 := buf2.String()
 
-	logrus.Debugf("PingV2Registry: resp: body: %s", bs)
+	logrus.Debugf("PingV2Registry: resp: body: %s; head: %s", bs1, bs2)
 
 	versions := auth.APIVersions(resp, DefaultRegistryVersionHeader)
 	for _, pingVersion := range versions {
