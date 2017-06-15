@@ -14,6 +14,7 @@ import (
 	"github.com/docker/distribution/registry/client/transport"
 	"github.com/docker/docker/api/types"
 	registrytypes "github.com/docker/docker/api/types/registry"
+	"bytes"
 )
 
 const (
@@ -295,7 +296,11 @@ func PingV2Registry(endpoint *url.URL, transport http.RoundTripper) (challenge.M
 
 	defer resp.Body.Close()
 
-	bs := string(resp.Body)
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(resp.Body)
+
+	bs := buf.String()
+
 	logrus.Debugf("PingV2Registry: resp: body: %s", bs)
 
 	versions := auth.APIVersions(resp, DefaultRegistryVersionHeader)
