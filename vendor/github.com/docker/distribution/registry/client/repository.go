@@ -22,7 +22,7 @@ import (
 	"github.com/docker/distribution/registry/storage/cache/memory"
 	//"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
-	//"github.com/Sirupsen/logrus"
+	"github.com/Sirupsen/logrus"
 )
 
 // Registry provides an interface for calling Repositories, which returns a catalog of repositories.
@@ -469,8 +469,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		req.Header.Set("If-None-Match", ms.etags[digestOrTag])
 	}
 
-	//reqString := printRequest(req)
-	//logrus.Debugf("Get manifest: %s", reqString)
+	req1 := req
+	reqString := printRequest(req1)
+	logrus.Debugf("Get manifest: %s", reqString)
 
 	resp, err := ms.client.Do(req)
 	if err != nil {
@@ -478,8 +479,9 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	}
 	defer resp.Body.Close()
 
-	//respString := printResponse(resp)
-	//logrus.Debugf("Get manifest: %s", respString)
+	resp1 := resp
+	respString := printResponse(resp1)
+	logrus.Debugf("Get manifest: %s", respString)
 
 	if resp.StatusCode == http.StatusNotModified {
 		return nil, distribution.ErrManifestNotModified
