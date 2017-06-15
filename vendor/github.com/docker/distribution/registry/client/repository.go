@@ -22,6 +22,7 @@ import (
 	"github.com/docker/distribution/registry/storage/cache/memory"
 	//"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
+	"github.com/Sirupsen/logrus"
 )
 
 // Registry provides an interface for calling Repositories, which returns a catalog of repositories.

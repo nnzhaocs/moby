@@ -30,6 +30,8 @@ import (
 	"strings"
 
 	"github.com/opencontainers/go-digest"
+	"net/http"
+	"io/ioutil"
 )
 
 const (
@@ -430,4 +432,55 @@ func (c canonicalReference) String() string {
 
 func (c canonicalReference) Digest() digest.Digest {
 	return c.digest
+}
+
+func printResponse(resp *http.Response) string{
+	var response []string
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//	return  nil
+	}
+
+	tr := string(bs)
+	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
+
+	// Loop through headers
+	for name, headers := range resp.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			response = append(response, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	//logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
+
+	return strings.Join(response, "\n")
+}
+
+func printRequest(r *http.Request) string {
+	// formatRequest generates ascii representation of a request
+	//func formatRequest(r *http.Request) string {
+	// Create return string
+	var request []string
+	// Add the request string
+	url := fmt.Sprintf("Request: Method: %v; URL: %v Proto: %v", r.Method, r.URL, r.Proto)
+	request = append(request, url)
+	// Add the host
+	request = append(request, fmt.Sprintf("Host: %v \n Header: ", r.Host))
+	// Loop through headers
+	for name, headers := range r.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			request = append(request, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	// If this is a POST, add post data
+	if r.Method == "POST" {
+		r.ParseForm()
+		request = append(request, "\n")
+		request = append(request, r.Form.Encode())
+	}
+	// Return the request as a string
+	return strings.Join(request, "\n")
 }
