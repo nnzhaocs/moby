@@ -20,6 +20,7 @@ import (
 	"github.com/docker/distribution/registry/client/transport"
 	"github.com/docker/distribution/registry/storage/cache"
 	"github.com/docker/distribution/registry/storage/cache/memory"
+	"github.com/docker/distribution/registry/auth"
 	"github.com/opencontainers/go-digest"
 )
 
@@ -458,6 +459,10 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return nil, err
 	}
 
+	//logrus.Debugf("Get manifest: http.NewRequest: GET %s body:nil", endpointStr)
+	reqString := printRequest(req)
+	logrus.Debugf("Get manifest: %s", reqString)
+
 	for _, t := range distribution.ManifestMediaTypes() {
 		req.Header.Add("Accept", t)
 	}
@@ -471,6 +476,10 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	respString := printResponse(resp)
+	logrus.Debugf("Get manifest: %s", respString)
+
 	if resp.StatusCode == http.StatusNotModified {
 		return nil, distribution.ErrManifestNotModified
 	} else if SuccessStatus(resp.StatusCode) {
