@@ -30,8 +30,8 @@ import (
 	"strings"
 
 	"github.com/opencontainers/go-digest"
-	"net/http"
-	"io/ioutil"
+	//"net/http"
+	//"io/ioutil"
 )
 
 const (
