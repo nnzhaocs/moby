@@ -197,11 +197,6 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 		return nil, err
 	}
 
-	//nannan
-	resp1 := resp
-	respString := printResponse(resp1)
-	logrus.Debugf("Get manifest: %s", respString)
-
 	// Normally would use client.SuccessStatus, but that would be a cyclic
 	// import
 	if resp.StatusCode >= 200 && resp.StatusCode <= 399 {
@@ -265,40 +260,40 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	return hrs.rc, nil
 }
 
-func printResponse(resp *http.Response) string{
-	var response []string
-	bs, err := ioutil.ReadAll(resp.Body)
-	if err != nil{
-		//	return  nil
-	}
-	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
-	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
-	//doStuff(rdr1)
-	resp.Body = rdr2
-
-	buf1 := new(bytes.Buffer)
-	buf1.ReadFrom(rdr1)
-	tr := buf1.String()
-
-	//tr := string(rdr1)
-	//buf1 := new(bytes.Buffer)
-	//buf1.ReadFrom(resp.Body)
-	//bs1 := buf1.String()
-
-	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
-
-	// Loop through headers
-	for name, headers := range resp.Header {
-		name = strings.ToLower(name)
-		for _, h := range headers {
-			response = append(response, fmt.Sprintf("%v: %v", name, h))
-		}
-	}
-
-	//logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
-
-	return strings.Join(response, "\n")
-}
+//func printResponse(resp *http.Response) string{
+//	var response []string
+//	bs, err := ioutil.ReadAll(resp.Body)
+//	if err != nil{
+//		//	return  nil
+//	}
+//	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+//	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+//	//doStuff(rdr1)
+//	resp.Body = rdr2
+//
+//	buf1 := new(bytes.Buffer)
+//	buf1.ReadFrom(rdr1)
+//	tr := buf1.String()
+//
+//	//tr := string(rdr1)
+//	//buf1 := new(bytes.Buffer)
+//	//buf1.ReadFrom(resp.Body)
+//	//bs1 := buf1.String()
+//
+//	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
+//
+//	// Loop through headers
+//	for name, headers := range resp.Header {
+//		name = strings.ToLower(name)
+//		for _, h := range headers {
+//			response = append(response, fmt.Sprintf("%v: %v", name, h))
+//		}
+//	}
+//
+//	//logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
+//
+//	return strings.Join(response, "\n")
+//}
 
 func printRequest(r *http.Request) string {
 	// formatRequest generates ascii representation of a request

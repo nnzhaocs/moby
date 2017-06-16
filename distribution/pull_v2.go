@@ -31,6 +31,8 @@ import (
 	"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
 	"golang.org/x/net/context"
+	"bytes"
+	"path/filepath"
 )
 
 var (
@@ -266,7 +268,9 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 
 	progress.Update(progressOutput, ld.ID(), "Download complete")
 
-	logrus.Debugf("Downloaded %s to tempfile %s", ld.ID(), tmpFile.Name())
+	//nannan
+	tempfilepath, err := filepath.Abs(filepath.Dir(tmpFile.Name()))
+	logrus.Debugf("Downloaded %s %s to tempfile %s", tempfilepath, ld.ID(), tmpFile.Name())
 
 	_, err = tmpFile.Seek(0, os.SEEK_SET)
 	if err != nil {
@@ -285,11 +289,11 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 
 	return ioutils.NewReadCloserWrapper(tmpFile, func() error {
 		tmpFile.Close()
-		err := os.RemoveAll(tmpFile.Name())
-		if err != nil {
-			logrus.Errorf("Failed to remove temp file: %s", tmpFile.Name())
-		}
-		return err
+		//err := os.RemoveAll(tmpFile.Name())
+		//if err != nil {
+		//	logrus.Errorf("Failed to remove temp file: %s", tmpFile.Name())
+		//}
+		//return err
 	}), size, nil
 }
 
@@ -552,6 +556,13 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 			cancel()
 			return
 		}
+		//nannan print configjson
+		//buf1 := new(bytes.Buffer)
+		//buf1.ReadFrom(configJSON)
+		n := bytes.IndexByte(configJSON, 0)
+		tr := string(configJSON[:n])
+		logrus.Debugf("pullSchema2: GET config: %s", tr)
+
 		configChan <- configJSON
 	}()
 
@@ -741,6 +752,7 @@ func (p *v2Puller) pullManifestList(ctx context.Context, ref reference.Named, mf
 func (p *v2Puller) pullSchema2Config(ctx context.Context, dgst digest.Digest) (configJSON []byte, err error) {
 	blobs := p.repo.Blobs(ctx)
 	configJSON, err = blobs.Get(ctx, dgst)
+
 	if err != nil {
 		return nil, err
 	}
