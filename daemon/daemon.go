@@ -159,8 +159,7 @@ func (daemon *Daemon) restore() error {
 
 		// Ignore the container if it does not support the current driver being used by the graph
 		if (container.Driver == "" && currentDriver == "aufs") || container.Driver == currentDriver {
-			rwlayer, err := daemon.layer
-			Store.GetRWLayer(container.ID)
+			rwlayer, err := daemon.layerStore.GetRWLayer(container.ID)
 			if err != nil {
 				logrus.Errorf("Failed to load container mount %v: %v", id, err)
 				continue
