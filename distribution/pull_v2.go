@@ -558,11 +558,22 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 			return
 		}
 		//nannan print configjson
-		//buf1 := new(bytes.Buffer)
-		//buf1.ReadFrom(configJSON)
-		n := bytes.IndexByte(configJSON, 0)
-		tr := string(configJSON[:n])
+		rdr1 := ioutil.NopCloser(bytes.NewBuffer(configJSON))
+		buf1 := new(bytes.Buffer)
+		buf1.ReadFrom(rdr1)
+		tr := buf1.String()
+		//n := bytes.IndexByte(configJSON, 0)
+		//tr := string(configJSON[:n])
 		logrus.Debugf("pullSchema2: GET config: %s", tr)
+
+		//	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+		//	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+		//	//doStuff(rdr1)
+		//	resp.Body = rdr2
+		//
+		//	buf1 := new(bytes.Buffer)
+		//	buf1.ReadFrom(rdr1)
+		//	tr := buf1.String()
 
 		configChan <- configJSON
 	}()
