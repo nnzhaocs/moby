@@ -468,7 +468,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	if _, ok := ms.etags[digestOrTag]; ok {
 		req.Header.Set("If-None-Match", ms.etags[digestOrTag])
 	}
-
+	//nannan
 	req1 := req
 	reqString := printRequest(req1)
 	logrus.Debugf("Get manifest: %s", reqString)
@@ -478,7 +478,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return nil, err
 	}
 	defer resp.Body.Close()
-
+	//nannan
 	resp1 := resp
 	respString := printResponse(resp1)
 	logrus.Debugf("Get manifest: %s", respString)
@@ -640,7 +640,7 @@ func (bs *blobs) Stat(ctx context.Context, dgst digest.Digest) (distribution.Des
 
 }
 
-func (bs *blobs) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) {
+func (bs *blobs) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) { //get config
 	reader, err := bs.Open(ctx, dgst)
 	if err != nil {
 		return nil, err

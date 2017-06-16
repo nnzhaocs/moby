@@ -335,7 +335,7 @@ func (p *v2Puller) pullV2Tag(ctx context.Context, ref reference.Named) (tagUpdat
 		tagOrDigest string // Used for logging/progress only
 	)
 	if digested, isDigested := ref.(reference.Canonical); isDigested {
-		manifest, err = manSvc.Get(ctx, digested.Digest())
+		manifest, err = manSvc.Get(ctx, digested.Digest()) //Nannan: get manifest
 		if err != nil {
 			return false, err
 		}
@@ -393,7 +393,7 @@ func (p *v2Puller) pullV2Tag(ctx context.Context, ref reference.Named) (tagUpdat
 			return false, err
 		}
 	case *schema2.DeserializedManifest:
-		id, manifestDigest, err = p.pullSchema2(ctx, ref, v)
+		id, manifestDigest, err = p.pullSchema2(ctx, ref, v) //get config
 		if err != nil {
 			return false, err
 		}
@@ -546,7 +546,7 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 
 	// Pull the image config
 	go func() {
-		configJSON, err := p.pullSchema2Config(ctx, target.Digest)
+		configJSON, err := p.pullSchema2Config(ctx, target.Digest) //nannan get config file
 		if err != nil {
 			configErrChan <- ImageConfigPullError{Err: err}
 			cancel()

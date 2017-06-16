@@ -8,6 +8,11 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"io/ioutil"
+	"bytes"
+	"strings"
+
+	"github.com/Sirupsen/logrus"
 )
 
 var (
@@ -182,10 +187,20 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	}
 
 	req.Header.Add("Accept-Encoding", "identity")
+	//nannan
+	req1 := req
+	reqString := printRequest(req1)
+	logrus.Debugf("httpReadSeeker reader: %s", reqString)
+
 	resp, err := hrs.client.Do(req)
 	if err != nil {
 		return nil, err
 	}
+
+	//nannan
+	resp1 := resp
+	respString := printResponse(resp1)
+	logrus.Debugf("Get manifest: %s", respString)
 
 	// Normally would use client.SuccessStatus, but that would be a cyclic
 	// import
@@ -248,4 +263,67 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	}
 
 	return hrs.rc, nil
+}
+
+func printResponse(resp *http.Response) string{
+	var response []string
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//	return  nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	//doStuff(rdr1)
+	resp.Body = rdr2
+
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+	tr := buf1.String()
+
+	//tr := string(rdr1)
+	//buf1 := new(bytes.Buffer)
+	//buf1.ReadFrom(resp.Body)
+	//bs1 := buf1.String()
+
+	response = append(response, fmt.Sprintf("Response: body: %v \n Header: ", tr))
+
+	// Loop through headers
+	for name, headers := range resp.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			response = append(response, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	//logrus.Debugf("PingV2Registry: http.NewRequest: GET %s body:nil", endpointStr)
+
+	return strings.Join(response, "\n")
+}
+
+func printRequest(r *http.Request) string {
+	// formatRequest generates ascii representation of a request
+	//func formatRequest(r *http.Request) string {
+	// Create return string
+	var request []string
+	// Add the request string
+	url := fmt.Sprintf("Request: Method: %v; URL: %v Proto: %v", r.Method, r.URL, r.Proto)
+	request = append(request, url)
+	// Add the host
+	request = append(request, fmt.Sprintf("Host: %v \n Header: ", r.Host))
+	// Loop through headers
+	for name, headers := range r.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			request = append(request, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	// If this is a POST, add post data
+	if r.Method == "POST" {
+		r.ParseForm()
+		request = append(request, "\n")
+		request = append(request, r.Form.Encode())
+	}
+	// Return the request as a string
+	return strings.Join(request, "\n")
 }
