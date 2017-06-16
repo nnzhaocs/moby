@@ -294,6 +294,7 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 		//	logrus.Errorf("Failed to remove temp file: %s", tmpFile.Name())
 		//}
 		//return err
+		return nil
 	}), size, nil
 }
 
