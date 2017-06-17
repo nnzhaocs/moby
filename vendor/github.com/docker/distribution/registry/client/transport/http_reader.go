@@ -8,11 +8,11 @@ import (
 	"os"
 	"regexp"
 	"strconv"
-	"io/ioutil"
-	"bytes"
+	//"io/ioutil"
+	//"bytes"
 	"strings"
 	"github.com/Sirupsen/logrus"
-	"path/filepath"
+	//"path/filepath"
 )
 
 var (
