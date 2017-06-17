@@ -23,6 +23,8 @@ import (
 	//"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
 	"github.com/Sirupsen/logrus"
+	"path/filepath"
+	"os"
 )
 
 // Registry provides an interface for calling Repositories, which returns a catalog of repositories.
@@ -483,6 +485,17 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	respString := printResponse(resp1)
 	logrus.Debugf("Get manifest: %s", respString)
 
+	imagedir := "/var/lib/docker/pull_images/"
+	absdirname := imagedir+reference.FamiliarString(ref)
+	os.Mkdir(absdirname, 0777)
+	if err != nil{
+		//
+	}
+	absfilename := filepath.Join(absdirname, "manifest")
+	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+
+	storeBlob(f.Name(), resp)
+
 	if resp.StatusCode == http.StatusNotModified {
 		return nil, distribution.ErrManifestNotModified
 	} else if SuccessStatus(resp.StatusCode) {
@@ -650,7 +663,7 @@ func (bs *blobs) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) { 
 	return ioutil.ReadAll(reader)
 }
 
-func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.ReadSeekCloser, error) {
+func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.ReadSeekCloser, error) { //nannan
 	ref, err := reference.WithDigest(bs.name, dgst)
 	if err != nil {
 		return nil, err
@@ -660,8 +673,18 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 		return nil, err
 	}
 
+	//nannan
+	imagedir := "/var/lib/docker/pull_images/"
+	absdirname := imagedir+reference.FamiliarString(ref)
+	//os.Mkdir(absdirname, 0777)
+	absfilename := filepath.Join(absdirname, "manifest")
+	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+
 	return transport.NewHTTPReadSeeker(bs.client, blobURL,
 		func(resp *http.Response) error {
+
+			storeBlob(f.Name(), resp)
+
 			if resp.StatusCode == http.StatusNotFound {
 				return distribution.ErrBlobUnknown
 			}
@@ -866,6 +889,45 @@ func (bs *blobStatter) Clear(ctx context.Context, dgst digest.Digest) error {
 }
 
 func (bs *blobStatter) SetDescriptor(ctx context.Context, dgst digest.Digest, desc distribution.Descriptor) error {
+	return nil
+}
+
+//func writeManifestFile(absFileName string, resp *http.Request) error {
+//	bs, err := ioutil.ReadAll(resp.Body)
+//	if err != nil {
+//		//
+//	}
+//	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+//	buf1 := new(bytes.Buffer)
+//	buf1.ReadFrom(rdr1)
+//
+//	//_, err = buf1.WriteTo(w)
+//
+//	err = ioutil.WriteFile(absFileName, buf1.Bytes(), 0644)
+//	if err != nil {
+//		//err handling
+//	}
+//	return nil
+//}
+
+func storeBlob(absFileName string, resp *http.Response) error {
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//return nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	resp.Body = rdr2
+
+	resp.Body = rdr2
+
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+
+	err = ioutil.WriteFile(absFileName, buf1.Bytes(), 0644)
+	if err != nil {
+		//err handling
+	}
 	return nil
 }
 

@@ -8,11 +8,11 @@ import (
 	"os"
 	"regexp"
 	"strconv"
-	//"io/ioutil"
-	//"bytes"
+	"io/ioutil"
+	"bytes"
 	"strings"
-
 	"github.com/Sirupsen/logrus"
+	"path/filepath"
 )
 
 var (
@@ -294,6 +294,27 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 //
 //	return strings.Join(response, "\n")
 //}
+
+func storeBlob(absFileName string, resp *http.Response) error {
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//return nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	resp.Body = rdr2
+
+	resp.Body = rdr2
+
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+
+	err = ioutil.WriteFile(absFileName, buf1.Bytes(), 0644)
+	if err != nil {
+		//err handling
+	}
+	return nil
+}
 
 func printRequest(r *http.Request) string {
 	// formatRequest generates ascii representation of a request

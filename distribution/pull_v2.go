@@ -289,11 +289,11 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 
 	return ioutils.NewReadCloserWrapper(tmpFile, func() error {
 		tmpFile.Close()
-		//err := os.RemoveAll(tmpFile.Name())
-		//if err != nil {
-		//	logrus.Errorf("Failed to remove temp file: %s", tmpFile.Name())
-		//}
-		//return err
+		err := os.RemoveAll(tmpFile.Name())
+		if err != nil {
+			logrus.Errorf("Failed to remove temp file: %s", tmpFile.Name())
+		}
+		return err
 		return nil
 	}), size, nil
 }
