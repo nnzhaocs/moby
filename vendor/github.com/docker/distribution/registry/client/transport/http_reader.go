@@ -12,7 +12,7 @@ import (
 	//"bytes"
 	"strings"
 	"github.com/Sirupsen/logrus"
-	"path/filepath"
+	//"path/filepath"
 )
 
 var (

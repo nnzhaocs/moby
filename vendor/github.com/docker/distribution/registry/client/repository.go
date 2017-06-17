@@ -23,7 +23,7 @@ import (
 	//"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
 	"github.com/Sirupsen/logrus"
-	//"path/filepath"
+	"path/filepath"
 	"os"
 )
 
