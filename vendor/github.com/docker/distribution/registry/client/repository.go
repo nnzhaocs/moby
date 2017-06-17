@@ -23,7 +23,7 @@ import (
 	//"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
 	"github.com/Sirupsen/logrus"
-	"path/filepath"
+	//"path/filepath"
 	"os"
 )
 
@@ -485,7 +485,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	respString := printResponse(resp1)
 	logrus.Debugf("Get manifest: %s", respString)
 
-	imagedir := "/var/lib/docker/pull_images/"
+	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
 	absdirname := imagedir+reference.FamiliarString(ref)
 	os.Mkdir(absdirname, 0777)
 	if err != nil{
@@ -674,7 +674,8 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	}
 
 	//nannan
-	imagedir := "/var/lib/docker/pull_images/"
+	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
+	//imagedir := "/var/lib/docker/pull_images/"
 	absdirname := imagedir+reference.FamiliarString(ref)
 	//os.Mkdir(absdirname, 0777)
 	absfilename := filepath.Join(absdirname, "manifest")
