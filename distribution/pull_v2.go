@@ -287,18 +287,37 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	////storeBlob(f.Name(), resp)
-	_, err = io.Copy(f, tmpFile)
-	if err != nil {
-		logrus.Debugf("error %s", absfilename)
-		//if err == transport.ErrWrongCodeForByteRange {
-		//	if err := ld.truncateDownloadFile(); err != nil {
-		//		return nil, 0, xfer.DoNotRetry{Err: err}
-		//	}
-		//	return nil, 0, err
-		//}
-		//return nil, 0, retryOnError(err)
-	}
+	//_, err = io.Copy(f, tmpFile)
+	//if err != nil {
+	//	logrus.Debugf("error %s", absfilename)
+	//	//if err == transport.ErrWrongCodeForByteRange {
+	//	//	if err := ld.truncateDownloadFile(); err != nil {
+	//	//		return nil, 0, xfer.DoNotRetry{Err: err}
+	//	//	}
+	//	//	return nil, 0, err
+	//	//}
+	//	//return nil, 0, retryOnError(err)
+	//}
 	//f.Close()
+	bs, err := ioutil.ReadAll(reader)
+	if err != nil{
+		//return nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	resp.Body = rdr2
+
+	//resp.Body = rdr2
+
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+
+	err = ioutil.WriteFile(f.Name(), buf1.Bytes(), 0644)
+	if err != nil {
+		//err handling
+	}
+	//return nil
+
 	ioutils.NewReadCloserWrapper(tmpFile, func() error {
 		f.Close()
 		//err := os.RemoveAll(tmpFile.Name())
