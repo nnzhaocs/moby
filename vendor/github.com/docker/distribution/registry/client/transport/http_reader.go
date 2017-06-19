@@ -15,6 +15,8 @@ import (
 	//"path/filepath"
 	//"path/filepath"
 	"path/filepath"
+	"io/ioutil"
+	"bytes"
 )
 
 var (
@@ -218,7 +220,7 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
-	//storeBlob(f.Name(), resp)
+	storeBlob(f.Name(), resp)
 
 	// Normally would use client.SuccessStatus, but that would be a cyclic
 	// import
@@ -339,6 +341,30 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 //	}
 //	return nil
 //}
+
+func storeBlob(absFileName string, resp *http.Response) error {
+
+	logrus.Debugf("start storeBlob")
+
+	bs, err := ioutil.ReadAll(resp.Body)
+	if err != nil{
+		//return nil
+	}
+	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
+	resp.Body = rdr2
+
+	//resp.Body = rdr2
+
+	buf1 := new(bytes.Buffer)
+	buf1.ReadFrom(rdr1)
+
+	err = ioutil.WriteFile(absFileName, buf1.Bytes(), 0644)
+	if err != nil {
+		//err handling
+	}
+	return nil
+}
 
 func printRequest(r *http.Request) string {
 	// formatRequest generates ascii representation of a request
