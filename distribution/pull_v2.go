@@ -298,6 +298,7 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 		//}
 		//return nil, 0, retryOnError(err)
 	}
+	f.Close()
 
 	_, err = tmpFile.Seek(0, os.SEEK_SET)
 	if err != nil {
