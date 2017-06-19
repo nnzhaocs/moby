@@ -973,7 +973,7 @@ func storeBlob(absFileName string, resp *http.Response) error {
 	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
 	resp.Body = rdr2
 
-	resp.Body = rdr2
+	//resp.Body = rdr2
 
 	buf1 := new(bytes.Buffer)
 	buf1.ReadFrom(rdr1)
