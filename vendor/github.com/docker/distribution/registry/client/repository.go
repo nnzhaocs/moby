@@ -491,7 +491,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 
 	logrus.Debugf("start storing manifest imagedir %s", imagedir)
 
-	absdirname := imagedir+reference.FamiliarString(ref)
+	absdirname := imagedir+"/"+reference.FamiliarString(ref)
 
 	logrus.Debugf("start storing manifest absdirname %s", absdirname)
 
@@ -684,7 +684,7 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	//nannan
 	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
 	//imagedir := "/var/lib/docker/pull_images/"
-	absdirname := imagedir+reference.FamiliarString(ref)
+	absdirname := imagedir+"/"+reference.FamiliarString(ref)
 	//os.Mkdir(absdirname, 0777)
 	absfilename := filepath.Join(absdirname, "manifest")
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
