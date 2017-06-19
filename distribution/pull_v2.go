@@ -281,7 +281,7 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
 	absdirname := imagedir+"/"+refstr1
 	logrus.Debugf("start storing blobs absdirname %s", absdirname)
-	//os.Mkdir(absdirname, 0777)
+	os.Mkdir(absdirname, 0777)
 	absfilename := filepath.Join(absdirname, string(ld.digest.Algorithm())+ld.digest.Hex())
 
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
