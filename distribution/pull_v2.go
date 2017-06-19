@@ -31,9 +31,9 @@ import (
 	"github.com/docker/docker/registry"
 	"github.com/opencontainers/go-digest"
 	"golang.org/x/net/context"
-	"bytes"
-	"path/filepath"
-	"strings"
+	//"bytes"
+	//"path/filepath"
+	//"strings"
 )
 
 var (
