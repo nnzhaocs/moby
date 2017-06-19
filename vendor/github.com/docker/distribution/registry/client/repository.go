@@ -703,28 +703,28 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	//
 	//storeBlob(f.Name(), resp)
-	logrus.Debugf("start storing blob")
-
-	imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
-	logrus.Debugf("start storing manifest imagedir %s", imagedir)
-	//imagedir := "/var/lib/docker/pull_images/"
-	refstr := strings.Replace(reference.FamiliarString(bs.name), "/", "-", -1)
-	refstr1 := strings.Replace(refstr, ":", "-", -1)
-	absdirname := imagedir+"/"+refstr1
-	logrus.Debugf("start storing blobs absdirname %s", absdirname)
-	os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
-
-	logrus.Debugf("start storing blobs absfilename %s", absfilename)
-	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	//logrus.Debugf("start storing blob")
+	//
+	//imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+	//logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	////imagedir := "/var/lib/docker/pull_images/"
+	//refstr := strings.Replace(reference.FamiliarString(bs.name), "/", "-", -1)
+	//refstr1 := strings.Replace(refstr, ":", "-", -1)
+	//absdirname := imagedir+"/"+refstr1
+	//logrus.Debugf("start storing blobs absdirname %s", absdirname)
+	//os.Mkdir(absdirname, 0777)
+	//absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+	//
+	//logrus.Debugf("start storing blobs absfilename %s", absfilename)
+	//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	//storeBlob(f.Name(), resp)
 
 	return transport.NewHTTPReadSeeker(bs.client, blobURL,
 		func(resp *http.Response) error {
-
 			if resp.StatusCode == http.StatusNotFound {
 				return distribution.ErrBlobUnknown
 			}
-			storeBlob(f.Name(), resp)
+			//storeBlob(f.Name(), resp)
 			return HandleErrorResponse(resp)
 		}), nil
 }
