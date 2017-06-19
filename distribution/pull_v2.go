@@ -613,34 +613,34 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 			cancel()
 			return
 		}
-		//nannan print configjson
-		rdr1 := ioutil.NopCloser(bytes.NewBuffer(configJSON))
-		buf1 := new(bytes.Buffer)
-		buf1.ReadFrom(rdr1)
-		tr := buf1.String()
-		//n := bytes.IndexByte(configJSON, 0)
-		//tr := string(configJSON[:n])
-		logrus.Debugf("pullSchema2: GET config: %s", tr)
-
-		imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
-		logrus.Debugf("start storing manifest imagedir %s", imagedir)
-		//imagedir := "/var/lib/docker/pull_images/"
-		refstr := strings.Replace(reference.FamiliarString(p.repoInfo.Name),"/", "-", -1)
-		//refstr := strings.Replace(reference.FamiliarString(ld.repoInfo.Name), "/", "-", -1)
-		refstr1 := strings.Replace(refstr, ":", "-", -1)
-		absdirname := imagedir+"/"+refstr1+"-config"
-		logrus.Debugf("start storing config absdirname %s", absdirname)
-		os.Mkdir(absdirname, 0777)
-		absfilename := filepath.Join(absdirname, "config-"+string(target.Digest.Algorithm())+"-"+target.Digest.Hex())
-
-		logrus.Debugf("start storing config absfilename %s", absfilename)
-		f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
-		//storeBlob(f.Name(), resp)
-
-		err = ioutil.WriteFile(f.Name(), buf1.Bytes(), 0644)
-		if err != nil {
-			//err handling
-		}
+		////nannan print configjson
+		//rdr1 := ioutil.NopCloser(bytes.NewBuffer(configJSON))
+		//buf1 := new(bytes.Buffer)
+		//buf1.ReadFrom(rdr1)
+		//tr := buf1.String()
+		////n := bytes.IndexByte(configJSON, 0)
+		////tr := string(configJSON[:n])
+		//logrus.Debugf("pullSchema2: GET config: %s", tr)
+		//
+		//imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+		//logrus.Debugf("start storing manifest imagedir %s", imagedir)
+		////imagedir := "/var/lib/docker/pull_images/"
+		//refstr := strings.Replace(reference.FamiliarString(p.repoInfo.Name),"/", "-", -1)
+		////refstr := strings.Replace(reference.FamiliarString(ld.repoInfo.Name), "/", "-", -1)
+		//refstr1 := strings.Replace(refstr, ":", "-", -1)
+		//absdirname := imagedir+"/"+refstr1+"-config"
+		//logrus.Debugf("start storing config absdirname %s", absdirname)
+		//os.Mkdir(absdirname, 0777)
+		//absfilename := filepath.Join(absdirname, "config-"+string(target.Digest.Algorithm())+"-"+target.Digest.Hex())
+		//
+		//logrus.Debugf("start storing config absfilename %s", absfilename)
+		//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+		////storeBlob(f.Name(), resp)
+		//
+		//err = ioutil.WriteFile(f.Name(), buf1.Bytes(), 0644)
+		//if err != nil {
+		//	//err handling
+		//}
 		//return nil
 
 		//	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
