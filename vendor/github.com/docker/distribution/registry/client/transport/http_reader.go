@@ -210,7 +210,7 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	logrus.Debugf("start storing manifest imagedir %s", imagedir)
 	//imagedir := "/var/lib/docker/pull_images/"
 	refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)
-	refstr1 := strings.Replace(refstr, "blobs/", "", -1)
+	refstr1 := strings.Replace(refstr, ":", "-", -1)
 	refstr2 := strings.Replace(refstr1, "/", "-", -1)
 	absdirname := imagedir+"/"+refstr2
 
