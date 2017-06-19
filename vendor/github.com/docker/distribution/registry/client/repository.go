@@ -485,7 +485,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	respString := printResponse(resp1)
 	logrus.Debugf("Get manifest: %s", respString)
 
-	logrus.Debugf("start storing manifest %s", tr)
+	logrus.Debugf("start storing manifest")
 
 	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
 
