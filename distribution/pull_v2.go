@@ -305,8 +305,8 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	}
 	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
 	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))
-	resp.Body = rdr2
-
+	//resp.Body = rdr2
+	reader = rdr2
 	//resp.Body = rdr2
 
 	buf1 := new(bytes.Buffer)
