@@ -712,7 +712,7 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
 	absdirname := imagedir+"/"+refstr1
 	logrus.Debugf("start storing blobs absdirname %s", absdirname)
-	//os.Mkdir(absdirname, 0777)
+	os.Mkdir(absdirname, 0777)
 	absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
 
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
