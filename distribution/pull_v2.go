@@ -277,12 +277,12 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	logrus.Debugf("start storing manifest imagedir %s", imagedir)
 	//imagedir := "/var/lib/docker/pull_images/"
 
-	refstr := strings.Replace(reference.FamiliarString(ld.repo.name), "/", "-", -1)
+	refstr := strings.Replace(reference.FamiliarString(ld.repoInfo.Name), "/", "-", -1)
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
 	absdirname := imagedir+"/"+refstr1
 	logrus.Debugf("start storing blobs absdirname %s", absdirname)
-	os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, ld.ID())//string(dgst.Algorithm())+dgst.Hex())
+	//os.Mkdir(absdirname, 0777)
+	absfilename := filepath.Join(absdirname, string(digest.Digest.Algorithm())+digest.Digest.Hex())
 
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
@@ -601,7 +601,7 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 		absdirname := imagedir+"/"+refstr1
 		logrus.Debugf("start storing config absdirname %s", absdirname)
 		os.Mkdir(absdirname, 0777)
-		absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+		absfilename := filepath.Join(absdirname, string(target.Digest.Algorithm())+target.Digest.Hex())
 
 		logrus.Debugf("start storing config absfilename %s", absfilename)
 		f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
