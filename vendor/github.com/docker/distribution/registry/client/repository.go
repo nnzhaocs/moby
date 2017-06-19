@@ -485,11 +485,19 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	respString := printResponse(resp1)
 	logrus.Debugf("Get manifest: %s", respString)
 
+	logrus.Debugf("start storing manifest %s", tr)
+
 	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
+
+	logrus.Debugf("start storing manifest imagedir %s", imagedir)
+
 	absdirname := imagedir+reference.FamiliarString(ref)
+
+	logrus.Debugf("start storing manifest absdirname %s", absdirname)
+
 	os.Mkdir(absdirname, 0777)
 	if err != nil{
-		//
+		logrus.Debugf("cannot make dir %s", absdirname)
 	}
 	absfilename := filepath.Join(absdirname, "manifest")
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
@@ -912,6 +920,9 @@ func (bs *blobStatter) SetDescriptor(ctx context.Context, dgst digest.Digest, de
 //}
 
 func storeBlob(absFileName string, resp *http.Response) error {
+
+	logrus.Debugf("start storeBlob")
+
 	bs, err := ioutil.ReadAll(resp.Body)
 	if err != nil{
 		//return nil
