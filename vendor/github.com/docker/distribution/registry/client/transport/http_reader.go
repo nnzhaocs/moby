@@ -214,7 +214,7 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 
 	logrus.Debugf("start storing blobs absdirname %s", absdirname)
 	os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, sha)
+	absfilename := filepath.Join(absdirname, "sha")
 
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
