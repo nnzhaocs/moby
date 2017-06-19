@@ -473,7 +473,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	//nannan
 	req1 := req
 	reqString := printRequest(req1)
-	logrus.Debugf("Get manifest: %s", reqString)
+	logrus.Debugf("Send manifest req: %s", reqString)
 
 	resp, err := ms.client.Do(req)
 	if err != nil {
