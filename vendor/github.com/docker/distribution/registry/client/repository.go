@@ -712,19 +712,18 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	absdirname := imagedir+"/"+refstr
 	logrus.Debugf("start storing blobs absdirname %s", absdirname)
 	//os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, dgst)
-	
+	absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 
 	return transport.NewHTTPReadSeeker(bs.client, blobURL,
 		func(resp *http.Response) error {
 
-			storeBlob(f.Name(), resp)
-
 			if resp.StatusCode == http.StatusNotFound {
 				return distribution.ErrBlobUnknown
 			}
+			storeBlob(f.Name(), resp)
 			return HandleErrorResponse(resp)
 		}), nil
 }
