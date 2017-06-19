@@ -13,6 +13,7 @@ import (
 	"strings"
 	"github.com/Sirupsen/logrus"
 	//"path/filepath"
+	"path/filepath"
 )
 
 var (
@@ -196,6 +197,27 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	logrus.Debugf("start storing blob")
+
+	////s := strings.Split(hrs.url, "/")
+	////namespace, reponame, sha:= s[4], s[5], s[7]
+	//
+	//imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+	//logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	////imagedir := "/var/lib/docker/pull_images/"
+	//refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)
+	//refstr1 := strings.Replace(refstr, "blobs/", "", -1)
+	//refstr2 := strings.Replace(refstr1, "/", "-", -1)
+	//absdirname := imagedir+"/"+refstr2
+	//
+	//logrus.Debugf("start storing blobs absdirname %s", absdirname)
+	//os.Mkdir(absdirname, 0777)
+	//absfilename := filepath.Join(absdirname, sha)
+	//
+	//logrus.Debugf("start storing blobs absfilename %s", absfilename)
+	//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	//storeBlob(f.Name(), resp)
 
 	// Normally would use client.SuccessStatus, but that would be a cyclic
 	// import

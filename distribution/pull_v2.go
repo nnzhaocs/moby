@@ -33,6 +33,7 @@ import (
 	"golang.org/x/net/context"
 	"bytes"
 	"path/filepath"
+	"strings"
 )
 
 var (
@@ -271,6 +272,32 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	//nannan
 	tempfilepath, err := filepath.Abs(filepath.Dir(tmpFile.Name()))
 	logrus.Debugf("Downloaded %s %s to tempfile %s", tempfilepath, ld.ID(), tmpFile.Name())
+
+	imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+	logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	//imagedir := "/var/lib/docker/pull_images/"
+
+	refstr := strings.Replace(reference.FamiliarString(ld.repo.name), "/", "-", -1)
+	refstr1 := strings.Replace(refstr, ":", "-", -1)
+	absdirname := imagedir+"/"+refstr1
+	logrus.Debugf("start storing blobs absdirname %s", absdirname)
+	os.Mkdir(absdirname, 0777)
+	absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+
+	logrus.Debugf("start storing blobs absfilename %s", absfilename)
+	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	////storeBlob(f.Name(), resp)
+	_, err = io.Copy(f, io.TeeReader(reader, ld.verifier))
+	if err != nil {
+		logrus.Debugf("error %s", absfilename)
+		//if err == transport.ErrWrongCodeForByteRange {
+		//	if err := ld.truncateDownloadFile(); err != nil {
+		//		return nil, 0, xfer.DoNotRetry{Err: err}
+		//	}
+		//	return nil, 0, err
+		//}
+		//return nil, 0, retryOnError(err)
+	}
 
 	_, err = tmpFile.Seek(0, os.SEEK_SET)
 	if err != nil {
@@ -565,6 +592,26 @@ func (p *v2Puller) pullSchema2(ctx context.Context, ref reference.Named, mfst *s
 		//n := bytes.IndexByte(configJSON, 0)
 		//tr := string(configJSON[:n])
 		logrus.Debugf("pullSchema2: GET config: %s", tr)
+
+		imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+		logrus.Debugf("start storing manifest imagedir %s", imagedir)
+		//imagedir := "/var/lib/docker/pull_images/"
+		refstr := strings.Replace(reference.FamiliarString(ref), "/", "-", -1)
+		refstr1 := strings.Replace(refstr, ":", "-", -1)
+		absdirname := imagedir+"/"+refstr1
+		logrus.Debugf("start storing config absdirname %s", absdirname)
+		os.Mkdir(absdirname, 0777)
+		absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+
+		logrus.Debugf("start storing config absfilename %s", absfilename)
+		f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+		//storeBlob(f.Name(), resp)
+
+		err = ioutil.WriteFile(f.Name(), buf1.Bytes(), 0644)
+		if err != nil {
+			//err handling
+		}
+		//return nil
 
 		//	rdr1 := ioutil.NopCloser(bytes.NewBuffer(bs))
 		//	rdr2 := ioutil.NopCloser(bytes.NewBuffer(bs))

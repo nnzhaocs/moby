@@ -670,6 +670,20 @@ func (bs *blobs) Get(ctx context.Context, dgst digest.Digest) ([]byte, error) { 
 	}
 	defer reader.Close()
 
+	//imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+	//logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	////imagedir := "/var/lib/docker/pull_images/"
+	//refstr := strings.Replace(reference.FamiliarString(bs.name), "/", "-", -1)
+	//refstr1 := strings.Replace(refstr, ":", "-", -1)
+	//absdirname := imagedir+"/"+refstr1
+	//logrus.Debugf("start storing blobs absdirname %s", absdirname)
+	//os.Mkdir(absdirname, 0777)
+	//absfilename := filepath.Join(absdirname, string(dgst.Algorithm())+dgst.Hex())
+	//
+	//logrus.Debugf("start storing blobs absfilename %s", absfilename)
+	//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	//storeBlob(f.Name(), resp)
+
 	return ioutil.ReadAll(reader)
 }
 
