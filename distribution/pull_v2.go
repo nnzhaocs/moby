@@ -287,7 +287,7 @@ func (ld *v2LayerDescriptor) Download(ctx context.Context, progressOutput progre
 	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	////storeBlob(f.Name(), resp)
-	_, err = io.Copy(f, io.TeeReader(reader, ld.verifier))
+	_, err = io.Copy(f, tmpFile)
 	if err != nil {
 		logrus.Debugf("error %s", absfilename)
 		//if err == transport.ErrWrongCodeForByteRange {
