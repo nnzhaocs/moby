@@ -684,12 +684,37 @@ func (bs *blobs) Open(ctx context.Context, dgst digest.Digest) (distribution.Rea
 	}
 
 	//nannan
-	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
-	//imagedir := "/var/lib/docker/pull_images/"
 
-	absdirname := imagedir+"/"+reference.FamiliarString(ref)
+	//imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
+	//
+	//logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	//
+	//refstr := strings.Replace(reference.FamiliarString(ref), "/", "-", -1)
+	//
+	//absdirname := imagedir+"/"+refstr
+	//
+	//logrus.Debugf("start storing manifest absdirname %s", absdirname)
+	//
 	//os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, "manifest")
+	//if err != nil{
+	//	logrus.Debugf("cannot make dir %s", absdirname)
+	//}
+	//absfilename := filepath.Join(absdirname, "manifest")
+	//f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
+	//
+	//storeBlob(f.Name(), resp)
+	logrus.Debugf("start storing blob")
+
+	imagedir := os.TempDir()//"/var/lib/docker/pull_images/"
+	logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	//imagedir := "/var/lib/docker/pull_images/"
+	refstr := strings.Replace(reference.FamiliarString(ref), "/", "-", -1)
+	absdirname := imagedir+"/"+refstr
+	logrus.Debugf("start storing blobs absdirname %s", absdirname)
+	//os.Mkdir(absdirname, 0777)
+	absfilename := filepath.Join(absdirname, dgst)
+	
+	logrus.Debugf("start storing blobs absfilename %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 
 	return transport.NewHTTPReadSeeker(bs.client, blobURL,
