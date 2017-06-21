@@ -219,9 +219,10 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 
 	//logrus.Debugf("filename: %s", absdirname)
 	//os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(imagedir, "sha256-"+sha)
 	now := time.Now()
-	logrus.Debugf("filename: %s", absfilename+"-"+now.Format("20060102150405"))
+	absfilename := filepath.Join(imagedir, "sha256-"+sha+"-"+now.Format("20060102150405"))
+
+	logrus.Debugf("filename: %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	storeBlob(f.Name(), resp)
 

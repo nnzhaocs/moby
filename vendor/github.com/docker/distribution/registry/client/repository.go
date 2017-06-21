@@ -495,15 +495,16 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
 
 	now := time.Now()
+	filename := refstr1+"-"+now.Format("20060102150405")
 	//absdirname := imagedir+"/"+refstr1
 
-	logrus.Debugf("filename: %s", refstr1+"-"+now.Format("20060102150405"))
+	logrus.Debugf("filename: %s", filename)
 
 	//os.Mkdir(absdirname, 0777)
 	//if err != nil{
 	//	logrus.Debugf("cannot make dir %s", absdirname)
 	//}
-	absfilename := filepath.Join(imagedir, refstr1)
+	absfilename := filepath.Join(imagedir, filename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 
 	storeBlob(f.Name(), resp)
