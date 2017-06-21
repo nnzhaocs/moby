@@ -64,7 +64,7 @@ type v2Puller struct {
 }
 
 func (p *v2Puller) Pull(ctx context.Context, ref reference.Named) (err error) {
-	// TODO(tiborvass): was ReceiveTimeout
+	// TODO(tiborvass): was ReceiveTimeout //get registry version
 	p.repo, p.confirmedV2, err = NewV2Repository(ctx, p.repoInfo, p.endpoint, p.config.MetaHeaders, p.config.AuthConfig, "pull")
 	if err != nil {
 		logrus.Warnf("Error getting v2 registry: %v", err)

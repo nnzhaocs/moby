@@ -201,24 +201,26 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 		return nil, err
 	}
 
-	logrus.Debugf("start storing blob")
-
+	//logrus.Debugf("")
+	logrus.Debugf("===============> start storing blob <===============")
 	//s := strings.Split(hrs.url, "/")
 	//namespace, reponame, sha:= s[4], s[5], s[7]
 
-	imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
-	logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	imagedir := "/go/src/github.com/docker/docker/images/layers"//"/var/lib/docker/pull_images/"
+	logrus.Debugf("dir: %s", imagedir)
 	//imagedir := "/var/lib/docker/pull_images/"
-	refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)
-	refstr1 := strings.Replace(refstr, ":", "-", -1)
-	refstr2 := strings.Replace(refstr1, "/", "-", -1)
-	absdirname := imagedir+"/"+refstr2
+	//refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)
+	//refstr1 := strings.Replace(refstr, ":", "-", -1)
+	//refstr2 := strings.Replace(refstr1, "/", "-", -1)
+	//absdirname := imagedir+"/"+refstr2
+	s := strings.Split(hrs.url, "sha256:")
+	_, sha := s[0], s[1]
 
-	logrus.Debugf("start storing blobs absdirname %s", absdirname)
-	os.Mkdir(absdirname, 0777)
-	absfilename := filepath.Join(absdirname, "sha")
+	//logrus.Debugf("filename: %s", absdirname)
+	//os.Mkdir(absdirname, 0777)
+	absfilename := filepath.Join(imagedir, "sha256-"+sha)
 
-	logrus.Debugf("start storing blobs absfilename %s", absfilename)
+	logrus.Debugf("filename: %s", absfilename)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 	storeBlob(f.Name(), resp)
 

@@ -483,25 +483,25 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	//nannan
 	resp1 := resp
 	respString := printResponse(resp1)
-	logrus.Debugf("Get manifest: %s", respString)
+	logrus.Debugf("===============> Get manifest: %s\n", respString)
 
-	logrus.Debugf("start storing manifest")
+	logrus.Debugf("===============> start storing manifest <===============")
 
-	imagedir := "/go/src/github.com/docker/docker/images"//"/var/lib/docker/pull_images/"
+	imagedir := "/go/src/github.com/docker/docker/images/manifests"//"/var/lib/docker/pull_images/"
 
-	logrus.Debugf("start storing manifest imagedir %s", imagedir)
+	logrus.Debugf("dir: %s", imagedir)
 
 	refstr := strings.Replace(reference.FamiliarString(ref), "/", "-", -1)
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
-	absdirname := imagedir+"/"+refstr1
+	//absdirname := imagedir+"/"+refstr1
 
-	logrus.Debugf("start storing manifest absdirname %s", absdirname)
+	logrus.Debugf("filename: %s", refstr1)
 
-	os.Mkdir(absdirname, 0777)
-	if err != nil{
-		logrus.Debugf("cannot make dir %s", absdirname)
-	}
-	absfilename := filepath.Join(absdirname, "manifest")
+	//os.Mkdir(absdirname, 0777)
+	//if err != nil{
+	//	logrus.Debugf("cannot make dir %s", absdirname)
+	//}
+	absfilename := filepath.Join(imagedir, refstr1)
 	f, err := os.OpenFile(absfilename, os.O_RDWR|os.O_CREATE|os.O_EXCL, 0600)
 
 	storeBlob(f.Name(), resp)
