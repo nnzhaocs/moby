@@ -493,9 +493,11 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 
 	refstr := strings.Replace(reference.FamiliarString(ref), "/", "-", -1)
 	refstr1 := strings.Replace(refstr, ":", "-", -1)
+
+	now := time.Now()
 	//absdirname := imagedir+"/"+refstr1
 
-	logrus.Debugf("filename: %s", refstr1)
+	logrus.Debugf("filename: %s", refstr1+"-"+now.Format("20060102150405"))
 
 	//os.Mkdir(absdirname, 0777)
 	//if err != nil{
