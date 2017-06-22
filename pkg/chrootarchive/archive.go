@@ -31,7 +31,8 @@ func Untar(tarArchive io.Reader, dest string, options *archive.TarOptions) error
 // and unpacks it into the directory at `dest`.
 // The archive must be an uncompressed stream.
 func UntarUncompressed(tarArchive io.Reader, dest string, options *archive.TarOptions) error {
-	return untarHandler(tarArchive, dest, options, false)
+	//nannan commit so it wont write to directory
+	//return untarHandler(tarArchive, dest, options, false)
 }
 
 // Handler for teasing out the automatic decompression
