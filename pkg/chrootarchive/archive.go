@@ -33,6 +33,7 @@ func Untar(tarArchive io.Reader, dest string, options *archive.TarOptions) error
 func UntarUncompressed(tarArchive io.Reader, dest string, options *archive.TarOptions) error {
 	//nannan commit so it wont write to directory
 	//return untarHandler(tarArchive, dest, options, false)
+	return nil
 }
 
 // Handler for teasing out the automatic decompression
