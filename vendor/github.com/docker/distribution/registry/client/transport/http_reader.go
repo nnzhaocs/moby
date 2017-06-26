@@ -192,10 +192,10 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	}
 
 	req.Header.Add("Accept-Encoding", "identity")
-	//nannan
-	req1 := req
-	reqString := printRequest(req1)
-	logrus.Debugf("httpReadSeeker reader: %s", reqString)
+	//nannan Here commit prnt config
+	//req1 := req
+	//reqString := printRequest(req1)
+	//logrus.Debugf("httpReadSeeker reader: %s", reqString)
 
 	resp, err := hrs.client.Do(req)
 	if err != nil {
