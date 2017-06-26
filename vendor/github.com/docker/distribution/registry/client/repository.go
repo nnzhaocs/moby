@@ -487,7 +487,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 
 	logrus.Debugf("===============> start storing manifest <===============")
 
-	imagedir := "/go/src/github.com/docker/docker/images/manifests"//"/var/lib/docker/pull_images/"
+	imagedir := "/gpfs/docker_images_largefs/images/manifests"//"/var/lib/docker/pull_images/"
 
 	logrus.Debugf("dir: %s", imagedir)
 

@@ -207,7 +207,7 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	//s := strings.Split(hrs.url, "/")
 	//namespace, reponame, sha:= s[4], s[5], s[7]
 
-	imagedir := "/go/src/github.com/docker/docker/images/layers"//"/var/lib/docker/pull_images/"
+	imagedir := "/gpfs/docker_images_largefs/docker/images/layers"//"/var/lib/docker/pull_images/"
 	logrus.Debugf("dir: %s", imagedir)
 	//imagedir := "/var/lib/docker/pull_images/"
 	//refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)
