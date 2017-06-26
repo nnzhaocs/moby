@@ -480,14 +480,14 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 		return nil, err
 	}
 	defer resp.Body.Close()
-	//nannan
-	resp1 := resp
-	respString := printResponse(resp1)
+	//nannan == commit print manifest
+	//resp1 := resp
+	//respString := printResponse(resp1)
 	logrus.Debugf("===============> Get manifest: %s\n", respString)
 
 	logrus.Debugf("===============> start storing manifest <===============")
 
-	imagedir := "/gpfs/docker_images_largefs/images/manifests"//"/var/lib/docker/pull_images/"
+	imagedir := "/gpfs/docker_images_largefs/docker/images/manifests"//"/var/lib/docker/pull_images/"
 
 	logrus.Debugf("dir: %s", imagedir)
 
