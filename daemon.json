@@ -1,0 +1,4 @@
+{
+    "debug": true,
+    "graph" : "/go/src/github.com/docker/docker/dockerimages"
+}
