@@ -483,7 +483,7 @@ func (ms *manifests) Get(ctx context.Context, dgst digest.Digest, options ...dis
 	//nannan == commit print manifest
 	//resp1 := resp
 	//respString := printResponse(resp1)
-	logrus.Debugf("===============> Get manifest: %s\n", respString)
+	//logrus.Debugf("===============> Get manifest: %s\n", respString)
 
 	logrus.Debugf("===============> start storing manifest <===============")
 

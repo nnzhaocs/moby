@@ -232,7 +232,8 @@ func ApplyLayer(dest string, layer io.Reader) (int64, error) {
 // can only be uncompressed.
 // Returns the size in bytes of the contents of the layer.
 func ApplyUncompressedLayer(dest string, layer io.Reader, options *TarOptions) (int64, error) {
-	return applyLayerHandler(dest, layer, options, false)
+	//return applyLayerHandler(dest, layer, options, false)
+	return 0, nil
 }
 
 // do the bulk load of ApplyLayer, but allow for not calling DecompressStream
