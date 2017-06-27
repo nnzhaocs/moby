@@ -242,7 +242,7 @@ func (ls *layerStore) applyTar(tx MetadataTransaction, ts io.Reader, parent stri
 	layer.size = 0 //applySize
 	layer.diffID = DiffID(digester.Digest())
 
-	logrus.Debugf("Applied tar %s to %s, size: %d", layer.diffID, layer.cacheID, applySize)
+	logrus.Debugf("Applied tar %s to %s, size: %d", layer.diffID, layer.cacheID, layer.size)
 
 	return nil
 }
