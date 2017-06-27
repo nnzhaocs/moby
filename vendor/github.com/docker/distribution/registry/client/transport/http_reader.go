@@ -206,8 +206,8 @@ func (hrs *httpReadSeeker) reader() (io.Reader, error) {
 	logrus.Debugf("===============> start storing blob <===============")
 	//s := strings.Split(hrs.url, "/")
 	//namespace, reponame, sha:= s[4], s[5], s[7]
-
-	imagedir := "/gpfs/docker_images_largefs/docker/images/layers"//"/var/lib/docker/pull_images/"
+	// gpfs/docker_images_largefs/docker
+	imagedir := "/go/src/github.com/docker/docker/docker_images_largefs/docker/images/layers"//"/var/lib/docker/pull_images/"
 	logrus.Debugf("dir: %s", imagedir)
 	//imagedir := "/var/lib/docker/pull_images/"
 	//refstr := strings.Replace(hrs.url, "https://registry-1.docker.io/v2/", "", -1)

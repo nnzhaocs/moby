@@ -449,10 +449,10 @@ func (d *Driver) ApplyDiff(id string, parent string, diff io.Reader) (size int64
 		return 0, err
 	}
 
-	options := &archive.TarOptions{UIDMaps: d.uidMaps, GIDMaps: d.gidMaps}
-	if size, err = graphdriver.ApplyUncompressedLayer(tmpRootDir, diff, options); err != nil {
-		return 0, err
-	}
+	//options := &archive.TarOptions{UIDMaps: d.uidMaps, GIDMaps: d.gidMaps}
+	//if size, err = graphdriver.ApplyUncompressedLayer(tmpRootDir, diff, options); err != nil {
+	//	return 0, err
+	//}
 
 	rootDir := path.Join(dir, "root")
 	if err := os.Rename(tmpRootDir, rootDir); err != nil {
