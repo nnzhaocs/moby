@@ -231,15 +231,15 @@ func (ls *layerStore) applyTar(tx MetadataTransaction, ts io.Reader, parent stri
 		}
 	}
 
-	//applySize, err := ls.driver.ApplyDiff(layer.cacheID, parent, rdr)
-	//if err != nil {
-	//	return err
-	//}
+	applySize, err := ls.driver.ApplyDiff(layer.cacheID, parent, rdr)
+	if err != nil {
+		return err
+	}
 
 	// Discard trailing data but ensure metadata is picked up to reconstruct stream
 	io.Copy(ioutil.Discard, rdr) // ignore error as reader may be closed
 
-	layer.size = 0//applySize
+	layer.size = applySize
 	layer.diffID = DiffID(digester.Digest())
 
 	logrus.Debugf("Applied tar %s to %s, size: %d", layer.diffID, layer.cacheID, layer.size)
