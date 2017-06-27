@@ -445,9 +445,9 @@ func (d *Driver) ApplyDiff(id string, parent string, diff io.Reader) (size int64
 		}
 	}()
 
-	if err = copyDir(parentRootDir, tmpRootDir, copyHardlink); err != nil {
-		return 0, err
-	}
+	//if err = copyDir(parentRootDir, tmpRootDir, copyHardlink); err != nil {
+	//	return 0, err
+	//}
 
 	//options := &archive.TarOptions{UIDMaps: d.uidMaps, GIDMaps: d.gidMaps}
 	//if size, err = graphdriver.ApplyUncompressedLayer(tmpRootDir, diff, options); err != nil {
